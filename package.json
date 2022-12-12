@@ -1,0 +1,23 @@
+{
+  "name": "csgo-nades-companion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ze0ne/csgo-nades-companion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ze0ne/csgo-nades-companion/issues"
+  },
+  "homepage": "https://github.com/ze0ne/csgo-nades-companion#readme",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
