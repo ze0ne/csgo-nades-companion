@@ -1,0 +1,28 @@
+body {
+  background: radial-gradient(50% 50% at 50% 50%, #1c1a28 0%, #26243a 100%);
+  font-family: "Roboto", sans-serif;
+  color: #ff003c;
+}
+
+main {
+  background: #14131e;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#overview {
+  position: relative;
+  background: url(https://www.csgonades.com/mapsoverlays/inferno.jpg);
+  height: 100%;
+  width: 100%;
+  background-size: contain;
+  width: 1024px;
+  height: 1024px;
+}
+
+.nade {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  opacity: .8;
+}

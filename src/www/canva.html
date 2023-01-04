@@ -1,0 +1,132 @@
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+<input type="text" name="pointer" id="pointer" value="crosshair">
+<canvas width="800" height="800">
+    Désolé, votre navigateur ne prend pas en charge &lt;canvas&gt;.
+</canvas>
+
+<script>
+    const icon = {
+        smoke:  {
+            name: "smoke",
+            width: 30,
+            height: 25
+        },
+        molotov:  {
+            name: "molotov",
+            width: 50,
+            height: 50
+        },
+        crosshair: {
+            name: "crosshair",
+            width: 20,
+            height: 20
+        }
+    }
+    addEventListener('click', (e) => {
+        const inputPointer = document.querySelector("#pointer").value;
+        createNewPointer(icon[inputPointer], e.offsetX, e.offsetY);
+    })
+
+    changePointer = (pointer) => document.querySelector("#pointer").value = pointer;
+
+    createLine = (type, begin, end) => {
+        console.log("createLinedd", type, begin, end);
+
+        // Vérifier si les coordonnées de départ et d'arrivée sont définies
+        if (typeof end[0] === "undefined") {
+            console.error("error");
+        } else {
+            // Calculer la distance entre les coordonnées de départ et d'arrivée
+            const dx = end[0] - begin[0];
+            const dy = end[1] - begin[1];
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Vitesse de déplacement de la ligne (en pixels par frame)
+            const speed = 2;
+
+            // Si la ligne n'a pas atteint sa destination, continuer l'animation
+            if (distance > speed) {
+            // Calculer les coordonnées intermédiaires de la ligne
+                const x = begin[0] + dx * speed / distance;
+                const y = begin[1] + dy * speed / distance;
+
+                // Dessiner la ligne
+                ctx.beginPath();
+                ctx.moveTo(begin[0], begin[1]);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = "green";
+                ctx.stroke();
+
+                // Mettre à jour les coordonnées de départ de la ligne
+                begin[0] = x;
+                begin[1] = y;
+
+                // Appeler la fonction de dessin avant le prochain rafraîchissement de la page
+                requestAnimationFrame(() => createLine(type, begin, end));
+            } else {
+                drawPointer(type, end[0], end[1]);
+                changePointer("crosshair");
+            }
+        }
+    }
+
+
+    drawLine = (begin, end, stroke = 'black', width = 1) => {
+        console.log("drawLine end", begin, end);
+        if (stroke) {
+            ctx.strokeStyle = stroke;
+        }
+
+        if (width) {
+            ctx.lineWidth = width;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(...begin);
+        ctx.lineTo(...end);
+        ctx.stroke();
+    }
+
+    drawPointer = (type, x, y) => {
+        console.log("drawPointer", type, x, y);
+        const pointer = new Image();
+        pointer.src = "assets/icons/"+type.name+".svg";
+        console.log("pointer", pointer);
+        //pointer.onload = () => ctx.drawImage(pointer, `${x-(type.width/2)}`, `${y-(type.height/2)}`, type.width, type.height);
+        pointer.onload = () => ctx.drawImage(pointer, `${x-(type.width/2)}`, `${y-(type.height/2)}`, type.width, type.height);
+
+    }
+
+
+    createNewPointer = (type, x, y) => {
+        destinationCoord = [x, y];
+        console.log("createNewPointer", type);
+        const inputPointer = document.querySelector("#pointer").value;
+        console.log("inputPointer", inputPointer);
+        changePointer("smoke");
+        if(type.name !== "crosshair") {
+            changePointer("crosshair");
+            createLine(type, origineCoord, destinationCoord);
+
+        } else {
+            origineCoord = [x, y];
+            drawPointer(type, x, y);
+        }
+
+    }
+    var canvas = document.querySelector('canvas');
+    var ctx = canvas.getContext('2d');
+    var overview = new Image();
+    overview.src = "https://www.csgonades.com/mapsoverlays/inferno.jpg";
+    overview.onload = function(){
+        ctx.drawImage(overview, 0, 0, 800, 800);
+    }
+    var smoke = new Image();
+    smoke.src = "assets/icons/smoke.svg";
+    smoke.onload = () => ctx.drawImage(smoke, `${800-15}`, `${800-15}`, 30, 25);
+</script>
